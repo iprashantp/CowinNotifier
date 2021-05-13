@@ -1,4 +1,4 @@
-# Node
+# CowinNotifier
 Its a simple Node project that will notify with playing music when it found an availablity of slot for following condition
 1. age = 18-45
 2. availibility for the pin provided in .ini file
