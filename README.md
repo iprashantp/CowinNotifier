@@ -12,3 +12,7 @@ Steps to run
 Enhancements:
 I have tried to implement mail using nodemailer but it somehow not working for me.
 Anyone wish to add the feature is really appreciated.
+
+Note: 
+currently i have added 2 pincodes to watch the slots, feel free to modify the code as per your need.
+And its greatly appreciated to make it more generic.
