@@ -2,11 +2,10 @@ import express from "express";
 import cowin from "./cowin.js";
 import constLib from './constants.js';
 var app = express();
-
 app.set("view engine", "ejs");
 
 var f = () => {
-    setInterval(cowin.callCowin, 30000);
+    setInterval(cowin.callCowin, 10000);
 }
 
 app.listen(3000, () => {

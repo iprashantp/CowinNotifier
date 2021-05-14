@@ -1,7 +1,7 @@
 import request from "request";
 import sound from 'sound-play'
 import constLib from './constants.js'
-import sendMail from './mailer.js'
+import mailer from './mailer.js'
 
 var callCowin = () => {
     var currentDate = new Date();
@@ -28,8 +28,8 @@ var handleResponse = (error, response, body, pin, currentTime) => {
 }
 
 var getAvailableSlots = (centers, currentTime, pin) => {
-    // mailer.sendMail("test mail")
-    //playMusic()
+    //mailer.sendMail("test mail")
+    //sound.playMusic()
     console.log(`${currentTime} :\tpin: ${pin} checking availability...`)
     centers.forEach(center => {
         var sessions = center.sessions;
@@ -37,7 +37,7 @@ var getAvailableSlots = (centers, currentTime, pin) => {
             if (session.available_capacity > 0 && session.min_age_limit == 18) {
                 var message = `${currentTime} :\t${center.fee_type} ##SLOTS AVAILABLE## in ${center.name} pin:${center.pincode} on ${session.date}, vaccine:${session.vaccine}`
                 console.log(message)
-                sendMail(message)
+                mailer.sendMail(message)
                 playMusic()
             }
         });
