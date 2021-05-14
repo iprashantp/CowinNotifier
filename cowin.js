@@ -36,19 +36,31 @@ var getAvailableSlots = (centers, currentTime, pin) => {
         sessions.forEach(session => {
             if (session.available_capacity > 0 && session.min_age_limit == 18) {
                 var message = `${currentTime} :\t${center.fee_type} ##SLOTS AVAILABLE## in ${center.name} pin:${center.pincode} on ${session.date}, vaccine:${session.vaccine}`
-                console.log(message)
-                mailer.sendMail(message)
-                playMusic()
+                try {
+                    doSlotAvailabilityAction(message)
+                } catch (err) {
+                    console.log(`${center}\nError:${err}`)
+                }
             }
         });
     });
 }
 
-var playMusic = () =>{
-sound.play('./iphone_original_tone.mp3', function (err) {
-    if (err) throw err;
-    console.log("Notified for Available slots");
-});
+var doSlotAvailabilityAction = message => {
+    console.log(message)
+    sendMail(message)
+    playMusic()
+}
+
+var sendMail = message => {
+    mailer.sendMail(message)
+}
+
+var playMusic = () => {
+    sound.play('./iphone_original_tone.mp3', function (err) {
+        if (err) throw err;
+        console.log("Notified via music for Available slots");
+    });
 }
 
 export default {

@@ -23,9 +23,9 @@ const sendMail = function (message) {
     console.log(message)
     transporter.sendMail(mailDataBuilder(message), function (err, info) {
         if (err)
-            console.log(`error sending mail: ${err}`)
+            console.log(`Error sending mail: ${err}`)
         else
-            console.log(info);
+            console.log(`Notified via mail for available slots: ${info}`);
     });
 }
 
