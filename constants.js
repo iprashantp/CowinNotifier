@@ -1,11 +1,9 @@
 import PropertiesReader from 'properties-reader';
+
 const prop = PropertiesReader('./cowin.ini');
-
-
 var constants = {}
-
 var getUrl = (pin, date) => `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pin}&date=${date}`
-var getPin = pins => pins.split(",")
+var getPin = pins => pins.toString().split(",")
 
 var getPinUrlMap = (pins, date) => {
     var pinUrlMap = new Map()
@@ -14,8 +12,6 @@ var getPinUrlMap = (pins, date) => {
     })
     return pinUrlMap
 }
-
-
 var initConstants = () => {
     constants.host = 'smtp.gmail.com'
     constants.port = '465'

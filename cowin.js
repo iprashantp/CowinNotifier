@@ -31,13 +31,15 @@ var getAvailableSlots = (centers, currentTime, pin) => {
     //mailer.sendMail("test mail")
     //sound.playMusic()
     var location = ''
+    var block = ''
     centers.forEach(center => {
         var sessions = center.sessions;
-        location!=''?`${center.state_name} ${center.district_name} `:''
+        location = location === '' ? `[${center.state_name}, ${center.district_name}] ` : location
+        block = `(${center.block_name}) `
         sessions.forEach(session => {
             if (session.available_capacity > 0 && session.min_age_limit == 18) {
                 available = true
-                var message = `${currentTime} :\t${center.fee_type} ##SLOTS AVAILABLE## in ${center.name} pin:${center.pincode} on ${session.date}, vaccine:${session.vaccine}`
+                var message = `${currentTime} :\t${center.fee_type} ##SLOTS_AVAILABLE## in ${center.name} ${location}pin:${pin}${block} on ${session.date}, vaccine:${session.vaccine}`
                 try {
                     doSlotAvailabilityAction(message)
                 } catch (err) {
@@ -46,7 +48,7 @@ var getAvailableSlots = (centers, currentTime, pin) => {
             }
         });
     });
-    console.log(available ? '' : `${currentTime} :\t${location}pin: ${pin} slot not available!`)
+    console.log(available ? '' : `${currentTime} :\tpin:${pin} ${block}${location}| #SLOT_NOT_AVAILABLE#`)
 }
 
 var doSlotAvailabilityAction = message => {
