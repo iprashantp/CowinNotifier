@@ -6,14 +6,13 @@ import mailer from './mailer.js'
 var callCowin = () => {
     var currentDate = new Date();
     var currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
-    // console.log(`url1: ${constLib.constants.cowinUrl1}\n${constLib.constants.cowinUrl2}`)
-    console.log(`${currentTime} :\tfinding slots...`)
-    request(constLib.constants.cowinUrl1, function (error, response, body) {
-        handleResponse(error, response, body, constLib.constants.pin1, currentTime);
-    });
-    request(constLib.constants.cowinUrl2, function (error, response, body) {
-        handleResponse(error, response, body, constLib.constants.pin2, currentTime);
-    });
+    console.log(`\n${currentTime} :\tFinding slots...`)
+
+    for (let [pin, url] of constLib.constants.pinUrlMap) {
+        request(url, function (error, response, body) {
+            handleResponse(error, response, body, pin, currentTime);
+        });
+    }
 }
 
 var handleResponse = (error, response, body, pin, currentTime) => {
@@ -21,20 +20,23 @@ var handleResponse = (error, response, body, pin, currentTime) => {
         var data = JSON.parse(body);
         getAvailableSlots(data.centers, currentTime, pin)
     } else if (!error) { //error
-        console.log(`${currentTime} :\t${response.statusCode}:${response.statusMessage}`)
+        console.log(`${currentTime} :\tpin: ${pin} ${response.statusCode}: ${response.statusMessage}`)
     } else {
         console.log(`${currentTime} :\tpin: ${pin} response ${response}`)
     }
 }
 
 var getAvailableSlots = (centers, currentTime, pin) => {
+    var available = false;
     //mailer.sendMail("test mail")
     //sound.playMusic()
-    console.log(`${currentTime} :\tpin: ${pin} checking availability...`)
+    var location = ''
     centers.forEach(center => {
         var sessions = center.sessions;
+        location!=''?`${center.state_name} ${center.district_name} `:''
         sessions.forEach(session => {
             if (session.available_capacity > 0 && session.min_age_limit == 18) {
+                available = true
                 var message = `${currentTime} :\t${center.fee_type} ##SLOTS AVAILABLE## in ${center.name} pin:${center.pincode} on ${session.date}, vaccine:${session.vaccine}`
                 try {
                     doSlotAvailabilityAction(message)
@@ -44,12 +46,13 @@ var getAvailableSlots = (centers, currentTime, pin) => {
             }
         });
     });
+    console.log(available ? '' : `${currentTime} :\t${location}pin: ${pin} slot not available!`)
 }
 
 var doSlotAvailabilityAction = message => {
     console.log(message)
-    sendMail(message)
     playMusic()
+    sendMail(message)
 }
 
 var sendMail = message => {

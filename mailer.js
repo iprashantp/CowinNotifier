@@ -20,7 +20,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMail = function (message) {
-    console.log(message)
+    // console.log(message)
     transporter.sendMail(mailDataBuilder(message), function (err, info) {
         if (err)
             console.log(`Error sending mail: ${err}`)
