@@ -1,7 +1,7 @@
 import PropertiesReader from 'properties-reader';
-import utils from './utils.js'
+import dateUtil from '../utils/dateUtil.js'
 
-const prop = PropertiesReader('./cowin.ini');
+const prop = PropertiesReader('./resources/cowin.ini');
 var constants = {}
 var getUrl = (pin, date) => `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin?pincode=${pin}&date=${date}`
 var getPin = pins => pins.toString().split(",")
@@ -18,8 +18,8 @@ var initConstants = () => {
     constants.port = '465'
     constants.service = 'gmail'
     constants.name = prop.get('main.name')
-    constants.pinUrlMap = getPinUrlMap(getPin(prop.get('main.pin')), utils.getDateInFormat());
-    constants.date = utils.getDateInFormat()
+    constants.pinUrlMap = getPinUrlMap(getPin(prop.get('main.pin')), dateUtil.getDateInFormat());
+    constants.date = dateUtil.getDateInFormat()
     constants.mailId = prop.get('main.mailId')
     constants.password = prop.get('main.password')
 }

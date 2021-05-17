@@ -1,11 +1,11 @@
 import request from "request";
 import sound from 'sound-play'
-import constLib from './constants.js'
-import mailer from './mailer.js'
-import utils from './utils.js'
+import constLib from '../constants/constants.js'
+import mailUtil from '../utils/mailUtil.js'
+import dateUtil from '../utils/dateUtil.js'
 
 var callCowin = () => {
-    var currentDate = utils.getDate()
+    var currentDate = dateUtil.getDate()
     var currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
     console.log(`\n${currentTime} :\tFinding slots(on/after ${constLib.constants.date})...`)
 
@@ -29,7 +29,7 @@ var handleResponse = (error, response, body, pin, currentTime) => {
 
 var getAvailableSlots = (centers, currentTime, pin) => {
     var available = false;
-    //mailer.sendMail("test mail")
+    //mailUtil.sendMail("test mail")
     //sound.playMusic()
     var location = ''
     var block = ''
@@ -59,7 +59,7 @@ var doSlotAvailabilityAction = message => {
 }
 
 var sendMail = message => {
-    mailer.sendMail(message)
+    mailUtil.sendMail(message)
 }
 
 var playMusic = () => {

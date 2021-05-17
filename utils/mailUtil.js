@@ -1,5 +1,5 @@
 import nodemailer from 'nodemailer'
-import constLib from './constants.js'
+import constLib from '../constants/constants.js'
 
 const transporter = nodemailer.createTransport({
     service: constLib.constants.service,
