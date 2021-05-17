@@ -1,4 +1,5 @@
 import PropertiesReader from 'properties-reader';
+import utils from './utils.js'
 
 const prop = PropertiesReader('./cowin.ini');
 var constants = {}
@@ -17,11 +18,10 @@ var initConstants = () => {
     constants.port = '465'
     constants.service = 'gmail'
     constants.name = prop.get('main.name')
-    constants.pinUrlMap = getPinUrlMap(getPin(prop.get('main.pin')), prop.get('main.date'));
-    constants.date = prop.get('main.date')
+    constants.pinUrlMap = getPinUrlMap(getPin(prop.get('main.pin')), utils.getDateInFormat());
+    constants.date = utils.getDateInFormat()
     constants.mailId = prop.get('main.mailId')
     constants.password = prop.get('main.password')
-    // console.log(`${constants.pin1},${constants.pin2},${constants.date},${constants.mailId},${constants.password},\n${constants.cowinUrl1},\n${constants.cowinUrl2}`)
 }
 
 export default {

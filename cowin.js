@@ -2,14 +2,15 @@ import request from "request";
 import sound from 'sound-play'
 import constLib from './constants.js'
 import mailer from './mailer.js'
+import utils from './utils.js'
 
 var callCowin = () => {
-    var currentDate = new Date();
+    var currentDate = utils.getDate()
     var currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}:${currentDate.getSeconds()}`
-    console.log(`\n${currentTime} :\tFinding slots...`)
+    console.log(`\n${currentTime} :\tFinding slots(on/after ${constLib.constants.date})...`)
 
     for (let [pin, url] of constLib.constants.pinUrlMap) {
-        request(url, function (error, response, body) {
+        request(url, (error, response, body) => {
             handleResponse(error, response, body, pin, currentTime);
         });
     }
@@ -39,7 +40,7 @@ var getAvailableSlots = (centers, currentTime, pin) => {
         sessions.forEach(session => {
             if (session.available_capacity > 0 && session.min_age_limit == 18) {
                 available = true
-                var message = `${currentTime} :\t${center.fee_type} ##SLOTS_AVAILABLE## in ${center.name} ${location}pin:${pin}${block} on ${session.date}, vaccine:${session.vaccine}`
+                var message = `${currentTime} :\t${center.fee_type} ##SLOTS_AVAILABLE## in ${center.name} ${location}Pin:${pin}${block} on ${session.date}, vaccine:${session.vaccine}`
                 try {
                     doSlotAvailabilityAction(message)
                 } catch (err) {
@@ -48,7 +49,7 @@ var getAvailableSlots = (centers, currentTime, pin) => {
             }
         });
     });
-    console.log(available ? '' : `${currentTime} :\tpin:${pin} ${block}${location}| #SLOT_NOT_AVAILABLE#`)
+    console.log(available ? '' : `${currentTime} :\tPin:${pin} ${block}${location}| #SLOT_NOT_AVAILABLE#`)
 }
 
 var doSlotAvailabilityAction = message => {
