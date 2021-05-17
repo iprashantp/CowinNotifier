@@ -10,6 +10,7 @@ var callCowin = () => {
     console.log(`\n${currentTime} :\tFinding slots(on/after ${constLib.constants.date})...`)
 
     for (let [pin, url] of constLib.constants.pinUrlMap) {
+        // console.log(`requesting ${url}`)
         request(url, (error, response, body) => {
             handleResponse(error, response, body, pin, currentTime);
         });
@@ -33,14 +34,15 @@ var getAvailableSlots = (centers, currentTime, pin) => {
     // playMusic()
     var location = ''
     var block = ''
+    var ageSlot = constLib.constants.age == 18?'18-45':'45+'
     centers.forEach(center => {
         var sessions = center.sessions;
         location = location === '' ? `[${center.state_name}, ${center.district_name}] ` : location
         block = `(${center.block_name}) `
         sessions.forEach(session => {
-            if (session.available_capacity > 0 && session.min_age_limit == 18) {
+            if (session.available_capacity > 0 && session.min_age_limit == constLib.constants.age && session[`${constLib.constants.doseStr}`] > 0 ) {
                 available = true
-                var message = `${currentTime} :\t${center.fee_type} ##SLOTS_AVAILABLE## in ${center.name} ${location}Pin:${pin}${block} on ${session.date}, vaccine:${session.vaccine}`
+                var message = `${currentTime} :\t${center.fee_type} ##SLOTS_AVAILABLE##(age:${ageSlot}) in ${center.name} ${location}Pin:${pin}${block} on ${session.date}, vaccine:${session.vaccine}`
                 try {
                     doSlotAvailabilityAction(message)
                 } catch (err) {
@@ -49,13 +51,13 @@ var getAvailableSlots = (centers, currentTime, pin) => {
             }
         });
     });
-    console.log(available ? '' : `${currentTime} :\tPin:${pin} ${block}${location}| #SLOT_NOT_AVAILABLE#`)
+    console.log(available ? '' : `${currentTime} :\tPin:${pin} ${block}${location}| #SLOT_NOT_AVAILABLE#(age:${ageSlot})`)
 }
 
 var doSlotAvailabilityAction = message => {
     console.log(message)
     playMusic()
-    sendMail(message)
+    //sendMail(message)
 }
 
 var sendMail = message => {

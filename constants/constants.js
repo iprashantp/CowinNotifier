@@ -13,6 +13,11 @@ var getPinUrlMap = (pins, date) => {
     })
     return pinUrlMap
 }
+var getAgeSlab = age => {
+    if(age >= 45) return 45
+    else if(age >= 18) return 18
+    return 0
+}
 var initConstants = () => {
     constants.host = 'smtp.gmail.com'
     constants.port = '465'
@@ -22,6 +27,8 @@ var initConstants = () => {
     constants.date = dateUtil.getDateInFormat()
     constants.mailId = prop.get('main.mailId')
     constants.password = prop.get('main.password')
+    constants.doseStr = `available_capacity_dose${prop.get('main.dose')}`
+    constants.age = getAgeSlab(`${prop.get('main.age')}`)
 }
 
 export default {
