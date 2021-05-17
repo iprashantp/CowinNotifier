@@ -5,14 +5,13 @@ Its a simple Node project that will notify with playing music when it found an a
 
 Steps to run
 1. fork the project & clone
-2. cd to the directory
-3. npm i
-4. node app.js
+2. Update the cowin.ini
+3. cd to the directory
+4. npm i
+5. node app.js
 
 Enhancements:
 I have tried to implement mail using nodemailer but it somehow not working for me.
 Anyone wish to add the feature is really appreciated.
 
-Note: 
-currently i have added 2 pincodes to watch the slots, feel free to modify the code as per your need.
-And its greatly appreciated to make it more generic.
+Pincode limitation is resolved. Now you can provide any no. of pin codes.
