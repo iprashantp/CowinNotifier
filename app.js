@@ -1,5 +1,5 @@
 import express from "express";
-import cowin from "./core/cowin.js";
+import cowin from "./cowin.js";
 import constants from './constants/constants.js';
 var app = express();
 app.set("view engine", "ejs");

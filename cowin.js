@@ -1,8 +1,8 @@
 import request from "request";
 import sound from 'sound-play'
-import constLib from '../constants/constants.js'
-import mailUtil from '../utils/mailUtil.js'
-import dateUtil from '../utils/dateUtil.js'
+import constLib from './constants/constants.js'
+import mailUtil from './utils/mailUtil.js'
+import dateUtil from './utils/dateUtil.js'
 
 var callCowin = () => {
     var currentDate = dateUtil.getDate()
@@ -29,8 +29,8 @@ var handleResponse = (error, response, body, pin, currentTime) => {
 
 var getAvailableSlots = (centers, currentTime, pin) => {
     var available = false;
-    //mailUtil.sendMail("test mail")
-    //sound.playMusic()
+    // mailUtil.sendMail("test mail")
+    // playMusic()
     var location = ''
     var block = ''
     centers.forEach(center => {
@@ -63,10 +63,13 @@ var sendMail = message => {
 }
 
 var playMusic = () => {
-    sound.play('./iphone_original_tone.mp3', function (err) {
+    sound.play('./resources/iphone_original_tone.mp3', function (err) {
         if (err) throw err;
         console.log("Notified via music for Available slots");
-    });
+    })
+    .catch(err=>{
+        console.log(`error: ${err}`)
+    })
 }
 
 export default {
