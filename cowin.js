@@ -3,6 +3,7 @@ import sound from 'sound-play'
 import constLib from './constants/constants.js'
 import mailUtil from './utils/mailUtil.js'
 import dateUtil from './utils/dateUtil.js'
+import telegramUtil from './utils/telegramUtil.js'
 
 var callCowin = () => {
     var currentDate = dateUtil.getDate()
@@ -11,7 +12,7 @@ var callCowin = () => {
 
     for (let [pin, url] of constLib.constants.pinUrlMap) {
         // console.log(`requesting ${url}`)
-        request(url, (error, response, body) => {
+        request.get(url, (error, response, body) => {
             handleResponse(error, response, body, pin, currentTime);
         });
     }
@@ -30,8 +31,9 @@ var handleResponse = (error, response, body, pin, currentTime) => {
 
 var getAvailableSlots = (centers, currentTime, pin) => {
     var available = false;
-    // mailUtil.sendMail("test mail")
-    // playMusic()
+    // sendMail("test mail")
+    // notify()
+    // sendTelegramMessage('test message')
     var location = ''
     var block = ''
     var ageSlot = constLib.constants.age == 18?'18-45':'45+'
@@ -56,18 +58,24 @@ var getAvailableSlots = (centers, currentTime, pin) => {
 
 var doSlotAvailabilityAction = message => {
     console.log(message)
-    playMusic()
-    //sendMail(message)
+    notify()
+    // sendMail(message)
+    sendTelegramMessage(message)
+}
+
+var sendTelegramMessage = message => {
+    let msg = message.replace(/#/g, "")
+    telegramUtil.sendMessage(msg)
 }
 
 var sendMail = message => {
     mailUtil.sendMail(message)
 }
 
-var playMusic = () => {
+var notify = () => {
     sound.play('./resources/iphone_original_tone.mp3', function (err) {
         if (err) throw err;
-        console.log("Notified via music for Available slots");
+        console.log("Notified via music for Available slots")
     })
     .catch(err=>{
         console.log(`error: ${err}`)

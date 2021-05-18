@@ -29,6 +29,12 @@ var initConstants = () => {
     constants.password = prop.get('main.password')
     constants.doseStr = `available_capacity_dose${prop.get('main.dose')}`
     constants.age = getAgeSlab(`${prop.get('main.age')}`)
+    constants.mobileNo = prop.get('main.mobileNo')
+    //telegram
+    constants.telegrambaseurl = 'https://api.telegram.org/bot'
+    constants.telegramtoken = prop.get('telegram.token')
+    constants.telegramgroup = prop.get('telegram.group')
+    constants.telegramReqURL = `https://api.telegram.org/bot${prop.get('telegram.token')}/sendMessage?chat_id=${prop.get('telegram.group')}&text=`
 }
 
 export default {
