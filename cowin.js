@@ -42,10 +42,11 @@ var getAvailableSlots = (centers, currentTime, pin) => {
         location = location === '' ? `[${center.state_name}, ${center.district_name}] ` : location
         block = `(${center.block_name}) `
         sessions.forEach(session => {
-            if (session.available_capacity > 0 && session.min_age_limit == constLib.constants.age && session[`${constLib.constants.doseStr}`] > 0 ) {
+            if (session.min_age_limit == constLib.constants.age && session[`${constLib.constants.doseStr}`] > 0 ) {
                 available = true
                 var message = `${currentTime} :\t${center.fee_type} ##SLOTS_AVAILABLE##(age:${ageSlot}) in ${center.name} ${location}Pin:${pin}${block} on ${session.date}, vaccine:${session.vaccine}`
                 try {
+                    // console.log(message)
                     doSlotAvailabilityAction(message)
                 } catch (err) {
                     console.log(`${center}\nError:${err}`)
@@ -57,10 +58,11 @@ var getAvailableSlots = (centers, currentTime, pin) => {
 }
 
 var doSlotAvailabilityAction = message => {
+    let notification = constLib.constants.notifications;
     console.log(message)
-    notify()
-    // sendMail(message)
-    sendTelegramMessage(message)
+    if (notification.systemnotification) notify()
+    if (notification.telegram) sendTelegramMessage(message)
+    if (notification.email) sendMail(message)
 }
 
 var sendTelegramMessage = message => {
@@ -69,7 +71,8 @@ var sendTelegramMessage = message => {
 }
 
 var sendMail = message => {
-    mailUtil.sendMail(message)
+    //Disabled for now
+    // mailUtil.sendMail(message)
 }
 
 var notify = () => {

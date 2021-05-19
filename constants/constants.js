@@ -18,6 +18,28 @@ var getAgeSlab = age => {
     else if(age >= 18) return 18
     return 0
 }
+var getNotificationTypes = notificationType => {
+    var notifications = {
+        telegram : false,
+        systemnotification : false,
+        email : false
+    }
+    let notificationTypes = notificationType.toString().split(",")
+    notificationTypes.forEach( notification => {
+        switch(notification){
+            case '1':
+                notifications.telegram = true;
+                break;
+            case '2':
+                notifications.systemnotification = true;
+                break;
+            case '3':
+                notifications.email = true;
+                break;
+        }
+    })
+    return notifications;
+}
 var initConstants = () => {
     constants.host = 'smtp.gmail.com'
     constants.port = '465'
@@ -30,6 +52,8 @@ var initConstants = () => {
     constants.doseStr = `available_capacity_dose${prop.get('main.dose')}`
     constants.age = getAgeSlab(`${prop.get('main.age')}`)
     constants.mobileNo = prop.get('main.mobileNo')
+    constants.updateInterval = prop.get('main.updateInterval')
+    constants.notifications = getNotificationTypes(prop.get('main.notifications'))
     //telegram
     constants.telegrambaseurl = 'https://api.telegram.org/bot'
     constants.telegramtoken = prop.get('telegram.token')

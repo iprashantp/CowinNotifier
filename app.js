@@ -1,15 +1,15 @@
 import express from "express";
 import cowin from "./cowin.js";
-import constants from './constants/constants.js';
+import constLib from './constants/constants.js';
 var app = express();
 app.set("view engine", "ejs");
 
 var f = () => {
-    setInterval(cowin.callCowin, 10000);
+    setInterval(cowin.callCowin, 1000*constLib.constants.updateInterval);
 }
 
 app.listen(3000, () => {
-    constants.initConstants();
+    constLib.initConstants();
     console.log(`cowin search starts...`)
     f()
 });
